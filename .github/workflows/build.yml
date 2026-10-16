@@ -18,10 +18,11 @@ jobs:
           distribution: temurin
           java-version: 21
 
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
       - name: Install NDK 28
-        run: |
-          yes | sdkmanager --licenses > /dev/null
-          sdkmanager "ndk;28.0.12674087" "cmake;3.22.1"
+        run: sdkmanager "ndk;28.0.12674087" "cmake;3.22.1"
 
       - uses: gradle/actions/setup-gradle@v4
 
