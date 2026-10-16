@@ -4,9 +4,9 @@
 
 #pragma once
 
-#include "Vector.h"
-#include "RGBA.h"
-#include "common.h"
+#include "../Core/Vector.h"
+#include "../rgba.h"
+#include "../common.h"
 
 enum e2dEffectType : uint8 {
     EFFECT_LIGHT         = 0,
