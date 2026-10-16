@@ -1,0 +1,38 @@
+name: Build APK
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Install NDK 28
+        run: |
+          yes | sdkmanager --licenses > /dev/null
+          sdkmanager "ndk;28.0.12674087" "cmake;3.22.1"
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Build
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleDebug --stacktrace
+        env:
+          ANDROID_NDK_HOME: ${{ env.ANDROID_HOME }}/ndk/28.0.12674087
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: samp-mobile-apk
+          path: app/build/outputs/apk/**/*.apk
